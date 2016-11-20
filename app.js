@@ -1,10 +1,10 @@
+var config = require('./config.json');
+
 var http = require('http');
 var createHandler = require('github-webhook-handler');
 var handler = createHandler({ path: '/webhook', secret: config.secret });
 var async = require('async');
 var child_process = require('child_process');
-
-var config = require('./config.json');
 
 var projects = new Array();
 async.eachSeries(config.projects, function(json, next) {
