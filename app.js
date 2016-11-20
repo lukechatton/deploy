@@ -14,6 +14,8 @@ async.eachSeries(config.projects, function(json, next) {
 	console.log('directory: ' + json.directory);
 
 	projects.push(data);
+
+	next();
 });
 
 http.createServer(function (req, res) {
