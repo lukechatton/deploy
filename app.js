@@ -29,10 +29,10 @@ handler.on('error', function (err) {
 
 handler.on('push', function (event) {
   console.log('Received a push event for %s',
-    event.payload.repository.name);
+    event.payload.repository.full_name);
 
   	async.eachSeries(projects, function(project, next) {
-  		if(event.payload.repository.full_name.toLowerCase() == project.name.toLowerCase) {
+  		if(event.payload.repository.full_name.toLowerCase() == project.name.toLowerCase()) {
   			child_process.exec('cd ' + project.directory + ' && git pull');
   			console.log('updated ' + event.payload.repository.full_name);
   		}
