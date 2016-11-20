@@ -2,6 +2,7 @@ var http = require('http');
 var createHandler = require('github-webhook-handler');
 var handler = createHandler({ path: '/webhook', secret: 'myhashsecret' });
 var async = require('async');
+var child_process = require('child_process');
 
 var config = require('./config.json');
 
@@ -27,10 +28,15 @@ handler.on('error', function (err) {
 });
 
 handler.on('push', function (event) {
-  console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
-    event.payload.repository.html_url);
+  console.log('Received a push event for %s',
+    event.payload.repository.name);
 
+  	async.eachSeries(projects, function(project, next) {
+  		if(event.payload.repository.full_name.toLowerCase() == project.name.toLowerCase) {
+  			child_process.exec('cd ' + project.directory + ' && git pull');
+  			console.log('updated ' + event.payload.repository.full_name);
+  		}
+  	})
 
 });
 
