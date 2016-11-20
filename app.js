@@ -8,7 +8,7 @@ var config = require('./config.json');
 var projects = new Array();
 async.eachSeries(config.projects, function(json, next) {
 	var data = {};
-	data.url = json.url;
+	data.name = json.name;
 	data.directory = json.directory;
 	console.log('directory: ' + json.directory);
 
