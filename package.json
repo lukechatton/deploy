@@ -1,0 +1,14 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "description": "Node.js deploy server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luke Chatton",
+  "license": "ISC",
+  "dependencies": {
+    "github-webhook-handler": "^0.6.0"
+  }
+}
