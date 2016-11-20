@@ -1,6 +1,6 @@
 var http = require('http');
 var createHandler = require('github-webhook-handler');
-var handler = createHandler({ path: '/webhook', secret: 'myhashsecret' });
+var handler = createHandler({ path: '/webhook', secret: config.secret });
 var async = require('async');
 var child_process = require('child_process');
 
