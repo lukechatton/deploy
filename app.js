@@ -1,6 +1,7 @@
 var http = require('http');
 var createHandler = require('github-webhook-handler');
 var handler = createHandler({ path: '/webhook', secret: 'myhashsecret' });
+var async = require('async');
 
 var config = require('./config.json');
 
@@ -9,7 +10,7 @@ async.eachSeries(config.projects, function(json, next) {
 	var data = {};
 	data.url = json.url;
 	data.directory = json.directory;
-	console.log('directory: ' + directory);
+	console.log('directory: ' + json.directory);
 
 	projects.push(data);
 });
@@ -29,7 +30,7 @@ handler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.repository.html_url);
-  
+
 
 });
 
