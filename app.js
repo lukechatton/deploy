@@ -11,7 +11,7 @@ async.eachSeries(config.projects, function(json, next) {
 	var data = {};
 	data.name = json.name;
 	data.directory = json.directory;
-	console.log('directory: ' + json.directory);
+	console.log('Added project: ' + json.name + ' -> ' + json.directory);
 
 	projects.push(data);
 
