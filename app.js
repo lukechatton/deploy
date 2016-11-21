@@ -38,6 +38,8 @@ handler.on('push', function (event) {
   			child_process.exec('cd ' + project.directory + ' && git pull');
   			console.log('updated ' + event.payload.repository.full_name);
   		}
+
+  		return next();
   	})
 
 });
