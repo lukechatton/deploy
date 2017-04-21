@@ -20,7 +20,7 @@ Example Configuration:
 }
 ```
 
-For a full setup guide, click [here](https://github.com/lukechatton/deploy/wiki/setup)
+For a full setup guide, click [here](https://github.com/lukechatton/deploy/wiki/setup).
 
 ## Notes
 This currently only works on Linux. 
