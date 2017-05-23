@@ -8,12 +8,9 @@ var child_process = require('child_process');
 
 var projects = new Array();
 async.eachSeries(config.projects, function(json, next) {
-	var data = {};
-	data.name = json.name;
-	data.directory = json.directory;
-	console.log('Added project: ' + json.name + ' -> ' + json.directory);
+	projects.push(json);
 
-	projects.push(data);
+    console.log('Added project: ' + json.name);
 
 	next();
 });
@@ -35,8 +32,22 @@ handler.on('push', function (event) {
 
   	async.eachSeries(projects, function(project, next) {
   		if(event.payload.repository.full_name.toLowerCase() == project.name.toLowerCase()) {
-  			child_process.exec('cd ' + project.directory + ' && git pull');
-  			console.log('updated ' + event.payload.repository.full_name);
+
+  			if(project.directory) {
+                child_process.exec('cd ' + project.directory + ' && git pull');
+            }
+
+            if(project.commands) {
+				async.eachSeries(project.commands, function(command, next) {
+					child_process.exec(command);
+
+					child_process.on('exit', function() {
+						next();
+					})
+                })
+            }
+
+  			console.log('Processed ' + event.payload.repository.full_name);
   		}
 
   		return next();
