@@ -32,26 +32,43 @@ handler.on('push', function (event) {
 
   	async.eachSeries(projects, function(project, next) {
   		if(event.payload.repository.full_name.toLowerCase() == project.name.toLowerCase()) {
+  			async.series([
+  				function(next) {
+                    if(project.directory) {
+                        var exec = child_process.exec('cd ' + project.directory + ' && git pull');
+                        exec.on('exit', function() {
+                        	next();
+						})
+                    } else {
+                    	next();
+					}
+				},
 
-  			if(project.directory) {
-                child_process.exec('cd ' + project.directory + ' && git pull');
-            }
+				function(next) {
+                    if(project.commands) {
+                        async.eachSeries(project.commands, function(command, next) {
+                            console.log('executing command ' + command);
 
-            if(project.commands) {
-				async.eachSeries(project.commands, function(command, next) {
-                    console.log('executing command ' + command);
+                            child_process.exec(command);
+                            child_process.on('exit', function() {
+                                next();
+                            })
+                        }, function(err) {
+                        	next();
+						})
+                    } else {
+                    	next();
+					}
+				},
 
-					child_process.exec(command);
-					child_process.on('exit', function() {
-						next();
-					})
-                })
-            }
-
-  			console.log('Processed ' + event.payload.repository.full_name);
-  		}
-
-  		return next();
+				function(next) {
+                    console.log('Processed ' + event.payload.repository.full_name);
+                    next();
+				}
+			])
+  		} else {
+  			next();
+		}
   	})
 
 });
