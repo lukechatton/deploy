@@ -49,8 +49,8 @@ handler.on('push', function (event) {
                         async.eachSeries(project.commands, function(command, next) {
                             console.log('executing command ' + command);
 
-                            child_process.exec(command);
-                            child_process.on('exit', function() {
+                            var exec = child_process.exec(command);
+                            exec.on('exit', function() {
                                 next();
                             })
                         }, function(err) {
