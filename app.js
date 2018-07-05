@@ -36,9 +36,12 @@ handler.on('push', function (event) {
   				function(next) {
                     if(project.directory) {
                         var exec = child_process.exec('cd ' + project.directory + ' && git pull');
-                        exec.on('exit', function() {
-                        	next();
-						})
+                        exec.on('exit', function () {
+                            next();
+                        });
+                        exec.on('error', err => {
+                            console.log("[" + project.name + "]:", err);
+                        });
                     } else {
                     	next();
 					}
@@ -52,7 +55,10 @@ handler.on('push', function (event) {
                             var exec = child_process.exec(command);
                             exec.on('exit', function() {
                                 next();
-                            })
+                            });
+                            exec.on('error', err => {
+                                console.log("[" + project.name + "]:", err);
+                            });
                         }, function(err) {
                         	next();
 						})
