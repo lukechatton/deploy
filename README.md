@@ -10,7 +10,8 @@ Example Configuration:
         "projects": [
                 {
                         "name": "minehut/maps",
-                        "directory": "/home/maps"
+                        "directory": "/home/maps",
+                        "commands": ["echo it worked!"]
                 },
                 {
                         "name": "minehut/rotations",
