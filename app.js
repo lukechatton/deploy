@@ -36,7 +36,8 @@ handler.on('push', function (event) {
   				function(next) {
                     if(project.directory) {
                         var exec = child_process.exec('cd ' + project.directory + ' && git reset --hard && git pull', {
-                            cwd: project.directory
+                            cwd: project.directory,
+                            maxBuffer: 2000 * 1024
                         });
                         exec.stdout.on('data', (data) => {
                             console.log('[' + project.name + ']: ' + data);
@@ -61,7 +62,8 @@ handler.on('push', function (event) {
                             console.log('executing command ' + command);
 
                             var exec = child_process.exec(command, {
-                                cwd: project.directory
+                                cwd: project.directory,
+                                maxBuffer: 2000 * 1024
                             });
                             exec.stdout.on('data', (data) => {
                                 console.log('[' + project.name + ']: ' + data);
