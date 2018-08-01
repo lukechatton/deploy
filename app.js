@@ -38,7 +38,10 @@ handler.on('push', function (event) {
                         var exec = child_process.exec('cd ' + project.directory + ' && git reset --hard && git pull');
                         exec.stdout.on('data', (data) => {
                             console.log('[' + project.name + ']: ' + data);
-                        })
+                        });
+                        exec.stderr.on('data', (data) => {
+                            console.log('[' + project.name + ']: ' + data);
+                        });
                         exec.on('exit', function () {
                             next();
                         });
@@ -58,7 +61,10 @@ handler.on('push', function (event) {
                             var exec = child_process.exec(command);
                             exec.stdout.on('data', (data) => {
                                 console.log('[' + project.name + ']: ' + data);
-                            })
+                            });
+                            exec.stderr.on('data', (data) => {
+                                console.log('[' + project.name + ']: ' + data);
+                            });
                             exec.on('exit', function() {
                                 next();
                             });
