@@ -35,7 +35,7 @@ handler.on('push', function (event) {
   			async.series([
   				function(next) {
                     if(project.directory) {
-                        var exec = child_process.exec('cd ' + project.directory + ' && git reset --hard && git pull', {
+                        var exec = child_process.spawn('cd ' + project.directory + ' && git reset --hard && git pull', {
                             cwd: project.directory
                         });
                         exec.stdout.on('data', (data) => {
@@ -44,7 +44,7 @@ handler.on('push', function (event) {
                         exec.stderr.on('data', (data) => {
                             console.log('[' + project.name + ']: ' + data);
                         });
-                        exec.on('exit', function () {
+                        exec.on('close', function () {
                             next();
                         });
                         exec.on('error', err => {
@@ -60,7 +60,7 @@ handler.on('push', function (event) {
                         async.eachSeries(project.commands, function(command, next) {
                             console.log('executing command ' + command);
 
-                            var exec = child_process.exec(command, {
+                            var exec = child_process.spawn(command, {
                                 cwd: project.directory
                             });
                             exec.stdout.on('data', (data) => {
@@ -69,7 +69,7 @@ handler.on('push', function (event) {
                             exec.stderr.on('data', (data) => {
                                 console.log('[' + project.name + ']: ' + data);
                             });
-                            exec.on('exit', function() {
+                            exec.on('close', function() {
                                 next();
                             });
                             exec.on('error', err => {
